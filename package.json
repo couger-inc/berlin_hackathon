@@ -1,0 +1,9 @@
+{
+    "name": "berlin-hackathon-example",
+    "description": "example",
+    "author": "Couger Inc.",
+    "version": "0.0.1",
+    "dependencies": {
+        "websocket": "^1.0.26"
+    }
+}
