@@ -1,4 +1,5 @@
-# https://github.com/theturtle32/WebSocket-Node
+#!/usr/bin/env node
+// original script from  https://github.com/theturtle32/WebSocket-Node
 var WebSocketServer = require('websocket').server;
 var http = require('http');
 
