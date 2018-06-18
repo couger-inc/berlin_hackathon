@@ -3,6 +3,9 @@
     "description": "example",
     "author": "Couger Inc.",
     "version": "0.0.1",
+    "scripts": {
+        "serv": "node app.js"
+    },
     "dependencies": {
         "websocket": "^1.0.26"
     }
