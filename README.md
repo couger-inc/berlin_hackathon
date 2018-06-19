@@ -16,3 +16,6 @@ $ npm i
 ```bash
 $ npm start
 ```
+
+## List of actions
+You can check all the list of Virtual Human Agent reaction [Here](https://github.com/couger-inc/berlin_hackathon/wiki/%5BEng%5D-Home).
