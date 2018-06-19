@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 const WebSocketClient = require('websocket').client;
+const protobuf = require('protocol-buffers');
+const path = require('path');
+const fs = require('fs');
+const judgementAPI = protobuf(fs.readFileSync(path.resolve(__dirname, '../proto/judgement_api.proto')));
 
 const client = new WebSocketClient();
 
@@ -13,22 +17,25 @@ client.on('connect', function(connection) {
         console.log('Connection Error: ' + error.toString());
     });
     connection.on('close', function() {
-        console.log('berlin-hackathon Connection Closed');
+        console.log('Connection Closed');
     });
     connection.on('message', function(message) {
-        if (message.type === 'utf8') {
+        if (message.type === 'binary') {
+            const res = judgementAPI.JudgementResponse.decode(message.binaryData);
+            console.log(res);
+        } else if (message.type === 'utf8') {
             console.log('Received: \'' + message.utf8Data + '\'');
         }
     });
 
-    function sendNumber() {
-        if (connection.connected) {
-            const number = Math.round(Math.random() * 0xFFFFFF);
-            connection.sendUTF(number.toString());
-            setTimeout(sendNumber, 1000);
-        }
-    }
-    sendNumber();
+    setInterval(() => {
+        const rawData = judgementAPI.JudgementRequest.encode({
+            images: [],
+            message: '',
+            emotions: [],
+        });
+        connection.sendBytes(rawData);
+    }, 1000);
 });
 
-client.connect('ws://localhost:8080/', 'berlin-hackathon');
+client.connect('ws://localhost:8888/', null);
