@@ -5,43 +5,38 @@ const http = require('http');
 const protobuf = require('protocol-buffers');
 const path = require('path');
 const fs = require('fs');
+const judgementAPI = protobuf(fs.readFileSync(path.resolve(__dirname, './proto/judgement_api.proto')));
 
-const judgementAPIFile = fs.readFileSync(path.resolve(__dirname, './proto/judgement_api.proto'));
-const judgementAPI = protobuf(judgementAPIFile);
+const port = process.env.PORT || 8888;
 
-const server = http.createServer(function(request, response) {
-    console.log((new Date()) + ' Received request for ' + request.url);
+const server = http.createServer((request, response)=>{
+    console.log(`${new Date()} Received request for ${request.url}`);
     response.writeHead(404);
     response.end();
 });
-server.listen(8888, function() {
-    console.log((new Date()) + ' Server is listening on port 8080');
+
+server.listen(port, ()=>{
+    console.log(`${new Date()} Server is listening on port ${server.address().port}`);
 });
 
-wsServer = new WebSocketServer({
+const wsServer = new WebSocketServer({
     httpServer: server,
-    // You should not use autoAcceptConnections for production
-    // applications, as it defeats all standard cross-origin protection
-    // facilities built into the protocol and the browser.  You should
-    // *always* verify the connection's origin and decide whether or not
-    // to accept it.
-    autoAcceptConnections: false,
+    autoAcceptConnections: true,
 });
 
-wsServer.on('request', function(request) {
-    const connection = request.accept(null, request.origin);
-    console.log((new Date()) + ' Connection accepted.');
+wsServer.on('connect', (connection)=>{
+    console.log(`${new Date()} Peer ${connection.remoteAddress} Connection accepted.`);
     connection.sendUTF('hello');
-    connection.on('message', function(message) {
+    connection.on('message', (message)=>{
         if (message.type === 'binary') {
-            console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
+            console.log(`Received Binary Message of ${message.binaryData.length} bytes`);
             judgement(message.binaryData);
         } else {
-            console.log('Unsupported message type: ' + message.type);
+            console.log(`Unsupported message type: ${message.type}`);
         }
     });
-    connection.on('close', function(reasonCode, description) {
-        console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+    connection.on('close', (reasonCode, description)=>{
+        console.log(`${new Date()} Peer ${connection.remoteAddress} disconnected.`);
     });
 
     // setInterval(()=>{
@@ -62,7 +57,6 @@ wsServer.on('request', function(request) {
  */
 function judgement(req, connection) {
     judgementAPI.JudgementRequest.decode(req);
-    console.log(req);
 
     const res = judgementAPI.JudgementResponse.encode({
         actions: [{

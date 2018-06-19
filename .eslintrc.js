@@ -12,6 +12,5 @@ module.exports = {
     extends: 'eslint-config-google',
     rules: {
         'max-len': 0,
-        'require-jsdoc': 0,
     },
 }
