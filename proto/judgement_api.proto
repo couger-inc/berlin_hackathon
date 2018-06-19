@@ -1,0 +1,121 @@
+syntax = "proto3";
+package milano;
+
+option csharp_namespace = "Milano.Data";
+option java_package = "jp.co.couger.milano.data";
+option optimize_for = LITE_RUNTIME;
+
+message JudgementRequest {
+  message Rect {
+    float x = 1;
+    float y = 2;
+    float width = 3;
+    float height = 4;
+  }
+
+  message ImageData {
+    string label = 1;
+    Rect bbox = 2;
+    int32 confidence = 3;
+  }
+
+  message EmotionValue {
+    EmotionType type = 1;
+    int32 value = 2;
+  }
+
+  repeated ImageData images = 1;
+  string message = 2;
+  repeated EmotionValue emotions = 3;
+}
+
+message JudgementResponse {
+  repeated Action actions = 1;
+}
+
+enum EmotionType {
+    Happiness = 0;
+    Sadness = 1;
+    Fear = 2;
+    Anger = 3;
+    Disgust = 4;
+    Surprise = 5;
+    Pleasure = 6;
+    Love = 7;
+    Gratitude = 8;
+    Congratulation = 9;
+    Shyness = 10;
+    Expectation = 11;
+    Euphoria = 12;
+    Relief = 13;
+    Contentment = 14;
+    Contempt = 15;
+    Schadenfreude = 16;
+    Interest = 17;
+    Adoration = 18;
+    Motivation = 19;
+    Assuredness = 20;
+    Pride = 21;
+    Confidence = 22;
+    Inferiority = 23;
+    Shame = 24;
+    Pity = 25;
+    Anxiety = 26;
+    Regret = 27;
+    Envy = 28;
+    Desolation = 29;
+    Guilt = 30;
+    Disappointment = 31;
+    Shock = 32;
+    Panic = 33;
+    Suffering = 34;
+    Vigilance = 35;
+    Melancholy = 36;
+    Awe = 37;
+    Hostility = 38;
+    Disrespect = 39;
+    Boredom = 40;
+    Discontent = 41;
+    Hatred = 42;
+    Indignation = 43;
+    Distrust = 44;
+    None = 99;
+}
+
+message EmotionData {
+    EmotionType type = 1;
+    int32 duration = 2;
+}
+
+message EmotionDataList {
+    repeated EmotionData list = 1;
+}
+
+enum ActionType {
+    Regular = 0; // Regular(id)
+    Move = 1; // Move(Object|CameraFrontBustup|CameraFrontBody|CameraOut)
+    LookAt = 2; // LookAt(Object|Camera|)
+    PointAt = 3; // PointAt(Object|Camera)
+    SubTriggerStart = 4; // SubTriggerStart(id)
+    SubTriggerStop = 5; // SubTriggerStop(id)
+    ModeChange = 6; // ModeChange(Mode, id)
+    QueueClear = 7; // QueueClear()
+    EmotionChange = 8; // EmotionChange(Emotion, value)
+    MemoryPickup = 9; // MemoryPickup()
+    Attention = 10; // Attention(Object|Camera, Body|Head|Eye)
+    Facial = 11; // Facial(id, int)
+    RelativeMove = 12; // RelativeMove();
+    FlagOn = 13; // FlagOn(Initial)
+    FlagOff = 14; // FlagOff(Initial)
+    IoT = 15; // IoT(LightOn|LightOff|TVPower)
+    ResetAttention = 16; // ResetAttention()
+    Wait = 17; // Wait(int)
+    Echo = 18; // Echo(string)
+    EmotionReaction = 19; // EmotionReaction()
+}
+
+message Action {
+    ActionType type = 1;
+    repeated string args = 2;
+}
+

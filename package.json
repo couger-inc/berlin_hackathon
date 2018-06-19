@@ -8,6 +8,7 @@
         "lint": "eslint ."
     },
     "dependencies": {
+        "protocol-buffers": "^4.0.4",
         "websocket": "^1.0.26"
     },
     "devDependencies": {
