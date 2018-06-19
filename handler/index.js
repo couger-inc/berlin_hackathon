@@ -49,7 +49,6 @@ class Handler {
         });
         // Send to client
         this.connection.sendBytes(res);
-        console.log(new Date());
     }
 
     /**
