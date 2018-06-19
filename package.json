@@ -4,7 +4,7 @@
     "author": "Couger Inc.",
     "version": "0.0.1",
     "scripts": {
-        "serv": "node app.js",
+        "start": "node app.js",
         "lint": "eslint ."
     },
     "dependencies": {

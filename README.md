@@ -11,3 +11,8 @@ $ git clone https://github.com/couger-inc/berlin_hackathon.git
 $ cd berlin_hackathon
 $ npm i
 ```
+
+## Usage
+```bash
+$ npm start
+```
