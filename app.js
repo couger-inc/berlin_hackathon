@@ -23,7 +23,7 @@ wsServer = new WebSocketServer({
 });
 
 wsServer.on('request', function(request) {
-    var connection = request.accept('berlin-hackathon', request.origin);
+    var connection = request.accept(null, request.origin);
     console.log((new Date()) + ' Connection accepted.');
     connection.sendUTF('hello');
     connection.on('message', function(message) {
