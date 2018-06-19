@@ -13,7 +13,7 @@ client.on('connect', function(connection) {
         console.log('Connection Error: ' + error.toString());
     });
     connection.on('close', function() {
-        console.log('berlin-hackathon Connection Closed');
+        console.log('Connection Closed');
     });
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
@@ -31,4 +31,4 @@ client.on('connect', function(connection) {
     sendNumber();
 });
 
-client.connect('ws://localhost:8080/', 'berlin-hackathon');
+client.connect('ws://localhost:8888/', null);
