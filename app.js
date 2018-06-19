@@ -35,5 +35,6 @@ wsServer.on('connect', (connection)=>{
     });
     connection.on('close', (reasonCode, description)=>{
         console.log(`${new Date()} Peer ${connection.remoteAddress} disconnected.`);
+        handler.close();
     });
 });

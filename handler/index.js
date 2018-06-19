@@ -18,7 +18,7 @@ class Handler {
         this.connection = connection;
 
         // example: Send LookAt (Camera) once per second
-        setInterval(()=>{
+        this.timer = setInterval(()=>{
             const res = judgementAPI.JudgementResponse.encode({
                 actions: [{
                     type: judgementAPI.ActionType.LookAt,
@@ -49,6 +49,14 @@ class Handler {
         });
         // Send to client
         this.connection.sendBytes(res);
+        console.log(new Date());
+    }
+
+    /**
+     * Destractor
+     */
+    close() {
+        clearInterval(this.timer);
     }
 }
 
