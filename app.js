@@ -2,10 +2,7 @@
 // original script from  https://github.com/theturtle32/WebSocket-Node
 const WebSocketServer = require('websocket').server;
 const http = require('http');
-const protobuf = require('protocol-buffers');
-const path = require('path');
-const fs = require('fs');
-const judgementAPI = protobuf(fs.readFileSync(path.resolve(__dirname, './proto/judgement_api.proto')));
+const Handler = require('./handler');
 
 const port = process.env.PORT || 8888;
 
@@ -25,44 +22,18 @@ const wsServer = new WebSocketServer({
 });
 
 wsServer.on('connect', (connection)=>{
-    console.log(`${new Date()} Peer ${connection.remoteAddress} Connection accepted.`);
+    const handler = new Handler(connection);
+
     connection.sendUTF('hello');
     connection.on('message', (message)=>{
         if (message.type === 'binary') {
-            console.log(`Received Binary Message of ${message.binaryData.length} bytes`);
-            judgement(message.binaryData);
+            console.log(`${new Date()} Peer ${connection.remoteAddress} Connection accepted.`);
+            handler.judgement(message.binaryData);
         } else {
-            console.log(`Unsupported message type: ${message.type}`);
+            console.warn(`Unsupported message type: ${message.type}`);
         }
     });
     connection.on('close', (reasonCode, description)=>{
         console.log(`${new Date()} Peer ${connection.remoteAddress} disconnected.`);
     });
-
-    // setInterval(()=>{
-    //     const res = judgementAPI.JudgementResponse.encode({
-    //         actions: [{
-    //             type: judgementAPI.ActionType.LookAt,
-    //             args: ['Camera'],
-    //         }],
-    //     });
-    //     connection.sendBytes(res);
-    // }, 1000);
 });
-
-/**
- * judgement
- * @param {Buffer} req
- * @param {any} connection
- */
-function judgement(req, connection) {
-    judgementAPI.JudgementRequest.decode(req);
-
-    const res = judgementAPI.JudgementResponse.encode({
-        actions: [{
-            type: judgementAPI.ActionType.LookAt,
-            args: ['Camera'],
-        }],
-    });
-    connection.sendBytes(res);
-}
