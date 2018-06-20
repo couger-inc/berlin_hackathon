@@ -112,6 +112,8 @@ enum ActionType {
     Wait = 17; // Wait(int)
     Echo = 18; // Echo(string)
     EmotionReaction = 19; // EmotionReaction()
+    Speech = 20; // Speech(int ID) or Speech(string Sentense) 
+    Motion = 21; // Motion(string ID)
 }
 
 message Action {

@@ -17,16 +17,18 @@ class Handler {
     constructor(connection) {
         this.connection = connection;
 
-        // example: Send LookAt (Camera) once per second
-        this.timer = setInterval(()=>{
-            const res = judgementAPI.JudgementResponse.encode({
-                actions: [{
-                    type: judgementAPI.ActionType.LookAt,
-                    args: ['Camera'],
-                }],
-            });
-            connection.sendBytes(res);
-        }, 1000);
+        // example: Send Speech ("Nice to meet you") + Motion (Waving her hands)
+        const res = judgementAPI.JudgementResponse.encode({
+            actions: [{
+                type: judgementAPI.ActionType.Speech,
+                args: ['2'],
+            },
+            {
+                type: judgementAPI.ActionType.Motion,
+                args: ['12'],
+            }],
+        });
+        connection.sendBytes(res);
     }
 
     /**
@@ -37,14 +39,14 @@ class Handler {
         console.log(`Received Binary Message of ${rawReq.byteLength} bytes`);
         // Decode rawReq using protocol buffer
         const req = judgementAPI.JudgementRequest.decode(rawReq);
-        console.log(req);
+        console.log(JSON.stringify(req));
 
-        // example: Respond with LookAt (Camera) to any request
+        // example: Respond with Speech ("I do not understand well...") to any request
         // Encode using protocol buffer
         const res = judgementAPI.JudgementResponse.encode({
             actions: [{
-                type: judgementAPI.ActionType.LookAt,
-                args: ['Camera'],
+                type: judgementAPI.ActionType.Speech,
+                args: ['58'],
             }],
         });
         // Send to client
@@ -55,7 +57,6 @@ class Handler {
      * Destractor
      */
     close() {
-        clearInterval(this.timer);
     }
 }
 
