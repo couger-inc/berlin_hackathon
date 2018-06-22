@@ -35,6 +35,10 @@ class Handler {
             {
                 type: judgementAPI.ActionType.Speech,
                 args: ['2'],
+            },
+            {
+                type: judgementAPI.ActionType.Wait,
+                args: ['5000'],
             }],
         });
         connection.sendBytes(res);
