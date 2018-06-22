@@ -17,15 +17,24 @@ class Handler {
     constructor(connection) {
         this.connection = connection;
 
-        // example: Send Speech ("Nice to meet you") + Motion (Waving her hands)
+        // example: Send Move ("Camera Front") + LookAt ("Camera") + Motion (Waving her hands) + Speech ("Nice to meet you")
         const res = judgementAPI.JudgementResponse.encode({
-            actions: [{
-                type: judgementAPI.ActionType.Speech,
-                args: ['2'],
+            actions: [
+            {
+                type: judgementAPI.ActionType.Move,
+                args: ['CameraFrontBustup'],
+            },
+            {
+                type: judgementAPI.ActionType.LookAt,
+                args: ['Camera'],
             },
             {
                 type: judgementAPI.ActionType.Motion,
                 args: ['12'],
+            },
+            {
+                type: judgementAPI.ActionType.Speech,
+                args: ['2'],
             }],
         });
         connection.sendBytes(res);
@@ -36,17 +45,35 @@ class Handler {
      * @param {Buffer} rawReq
      */
     judgement(rawReq) {
-        console.log(`Received Binary Message of ${rawReq.byteLength} bytes`);
+        // console.log(`Received Binary Message of ${rawReq.byteLength} bytes`);
+        if (rawReq.byteLength === 0) {
+            return;
+        }
         // Decode rawReq using protocol buffer
         const req = judgementAPI.JudgementRequest.decode(rawReq);
         console.log(JSON.stringify(req));
-
-        // example: Respond with Speech ("I do not understand well...") to any request
+        // example: Respond with Move ("Camera Front") + LookAt ("Camera") + Motion ("Surprised") + Speech ("I want you to say it again") + Wait (5sec) to any request
         // Encode using protocol buffer
         const res = judgementAPI.JudgementResponse.encode({
             actions: [{
+                type: judgementAPI.ActionType.Move,
+                args: ['CameraFrontBody'],
+            },
+            {
+                type: judgementAPI.ActionType.LookAt,
+                args: ['Camera'],
+            },
+            {
+                type: judgementAPI.ActionType.Motion,
+                args: ['19'],
+            },
+            {
                 type: judgementAPI.ActionType.Speech,
-                args: ['58'],
+                args: ['57'],
+            },
+            {
+                type: judgementAPI.ActionType.Wait,
+                args: ['5000'],
             }],
         });
         // Send to client
