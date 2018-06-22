@@ -25,7 +25,6 @@ wsServer.on('connect', (connection)=>{
     console.log(`${new Date()} Peer ${connection.remoteAddress} Connection accepted.`);
     const handler = new Handler(connection);
 
-    connection.sendUTF('hello');
     connection.on('message', (message)=>{
         if (message.type === 'binary') {
             handler.judgement(message.binaryData);

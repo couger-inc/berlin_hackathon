@@ -22,7 +22,7 @@ client.on('connect', function(connection) {
     connection.on('message', function(message) {
         if (message.type === 'binary') {
             const res = judgementAPI.JudgementResponse.decode(message.binaryData);
-            console.log(res);
+            console.log(JSON.stringify(res));
         } else if (message.type === 'utf8') {
             console.log('Received: \'' + message.utf8Data + '\'');
         }
@@ -30,9 +30,21 @@ client.on('connect', function(connection) {
 
     setInterval(() => {
         const rawData = judgementAPI.JudgementRequest.encode({
-            images: [],
-            message: '',
-            emotions: [],
+            images: [{
+                label: 'orange',
+                bbox: {
+                    x: 0,
+                    y: 0,
+                    width: 0,
+                    height: 0,
+                },
+                confidence: 70,
+            }],
+            message: 'Test',
+            emotions: [{
+                type: judgementAPI.EmotionType.Pleasure,
+                value: 80,
+            }],
         });
         connection.sendBytes(rawData);
     }, 1000);
