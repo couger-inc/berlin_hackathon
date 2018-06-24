@@ -4,7 +4,7 @@ const fs = require('fs');
 
 // Import protocol buffer file from /proto/judgement_api.proto
 // For more information please see https://github.com/couger-inc/berlin_hackathon/wiki
-const judgementAPI = protobuf(fs.readFileSync(path.resolve(__dirname, '../proto/judgement_api.proto')));
+const judgementAPI = protobuf(fs.readFileSync(path.resolve(__dirname, '../../proto/judgement_api.proto')));
 
 /**
  * Handler Class
