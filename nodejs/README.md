@@ -8,7 +8,7 @@ This is node js server
 
 ```bash
 $ git clone https://github.com/couger-inc/berlin_hackathon.git
-$ cd berlin_hackathon
+$ cd berlin_hackathon/nodejs
 $ npm i
 ```
 
