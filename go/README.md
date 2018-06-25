@@ -1,20 +1,20 @@
-# Berlin hackathon sample
-This is node js server 
+# Berlin hackathon sample for go
+This is golang server 
 
 ## Requirement
-* nodejs
+* golang
 
 ## Installation
-
+(in GOPATH)
 ```bash
 $ git clone https://github.com/couger-inc/berlin_hackathon.git
-$ cd berlin_hackathon
-$ npm i
+$ cd berlin_hackathon/go
+$ go get -u
 ```
 
 ## Usage
 ```bash
-$ npm start
+$ go run *.go
 ```
 
 ## List of actions
