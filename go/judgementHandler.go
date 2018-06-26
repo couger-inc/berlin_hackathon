@@ -44,6 +44,7 @@ func NewJudgementHandler(conn *websocket.Conn) (*JudgementHandler, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer writer.Close()
 	_, err = writer.Write(res)
 	if err != nil {
 		return nil, err
@@ -88,6 +89,7 @@ func (h *JudgementHandler) Judgement(judgementAPI.JudgementRequest) error {
 	if err != nil {
 		return err
 	}
+	defer writer.Close()
 	_, err = writer.Write(res)
 	if err != nil {
 		return err
